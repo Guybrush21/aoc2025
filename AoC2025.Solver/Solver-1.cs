@@ -7,50 +7,80 @@ public class Solver1 : SolverBase
     {
     }
 
-    public override string Part2()
-    {
-        var left = new List<int>();
-        var right = new List<int>();
-
-        foreach (var line in this.Data)
-        {
-            var split = line.Split("   ");
-            left.Add(Convert.ToInt32(split[0]));
-            right.Add(Convert.ToInt32(split[1]));
-        }
-
-        left.Sort();
-        right.Sort();
-
-        var score = 0;
-        foreach (var l in left)
-        {
-            score += l * right.FindAll(r => r == l).Count;
-        }
-        return score.ToString();
-    }
-
     public override string Part1()
     {
-        var left = new List<int>();
-        var right = new List<int>();
+        var dial = new Dial();
 
+        int zeroPosition = 0;
         foreach (var line in this.Data)
         {
-            var split = line.Split("   ");
-            left.Add(Convert.ToInt32(split[0].Trim()));
-            right.Add(Convert.ToInt32(split[1].Trim()));
+            var rawDirection = line[0];
+            var direction = rawDirection == 'L' ? Dial.Direction.Left : Dial.Direction.Right;
+            var clicks = int.Parse(line.Substring(1));
+
+            this.logger.LogDebug("Click And Direction: {clicks} - {direction}", clicks, direction);
+            this.logger.LogDebug("Position before: {position}", dial.Position);
+
+            dial.Move(clicks, direction);
+
+            this.logger.LogDebug("Position after: {position}", dial.Position);
+
+            if (dial.Position == 0) zeroPosition++;
+
+
         }
 
-        left.Sort();
-        right.Sort();
+        return zeroPosition.ToString();
 
-        var distanceSum = 0;
-        for (var i = 0; i < left.Count; i++)
+    }
+
+    public override string Part2()
+    {
+        return "";
+    }
+
+    class Dial
+    {
+
+        public Dial(int initialPosition = 50, int lenght = 100)
         {
-            this.logger.LogDebug($"distanceSum is {distanceSum}");
-            distanceSum += int.Abs(left[i] - right[i]);
+            Position = initialPosition;
+            Lenght = lenght;
         }
-        return distanceSum.ToString();
+
+        int Lenght { get; set; }
+        public int Position { get; set; }
+
+        public enum Direction
+        {
+            Left, Right
+        }
+
+        public void Move(int clicks, Direction direction)
+        {
+            while (clicks > Lenght)
+            {
+                clicks = clicks - Lenght;
+            }
+
+            if (direction == Direction.Right)
+            {
+                this.Position += clicks;
+                if (Position > Lenght)
+                    Position = Position - Lenght;
+
+            }
+            if (direction == Direction.Left)
+            {
+                this.Position -= clicks;
+                if (Position < 0)
+                    Position = Lenght - int.Abs(Position);
+            }
+
+            if (Position == Lenght)
+            {
+                Position = 0;
+            }
+        }
     }
 }

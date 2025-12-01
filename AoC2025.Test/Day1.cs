@@ -13,15 +13,19 @@ public class Day1
     [Fact]
     public void Part1()
     {
-        var input = @"3   4
-  4   3
-  2   5
-  1   3
-  3   9
-  3   3";
+        var input = @"L68
+L30
+R48
+L5
+R60
+L55
+L1
+L99
+R14
+L82";
 
         var solver = new Solver1(1, input.Split(Environment.NewLine), logger);
 
-        Assert.Equal("11", solver.Part1());
+        Assert.Equal("3", solver.Part1());
     }
 }
