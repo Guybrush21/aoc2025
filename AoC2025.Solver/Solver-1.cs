@@ -3,53 +3,52 @@ using Microsoft.Extensions.Logging;
 public class Solver1 : SolverBase
 {
 
+    Dial dial;
+
     public Solver1(int day, string[] input, ILogger logger) : base(day, input, logger)
     {
-    }
+        dial = new Dial(this.logger);
 
-    public override string Part1()
-    {
-        var dial = new Dial();
-
-        int zeroPosition = 0;
         foreach (var line in this.Data)
         {
             var rawDirection = line[0];
             var direction = rawDirection == 'L' ? Dial.Direction.Left : Dial.Direction.Right;
             var clicks = int.Parse(line.Substring(1));
-
-            this.logger.LogDebug("Click And Direction: {clicks} - {direction}", clicks, direction);
-            this.logger.LogDebug("Position before: {position}", dial.Position);
-
             dial.Move(clicks, direction);
-
-            this.logger.LogDebug("Position after: {position}", dial.Position);
-
-            if (dial.Position == 0) zeroPosition++;
-
 
         }
 
-        return zeroPosition.ToString();
+    }
+
+    public override string Part1()
+    {
+
+        return dial.ZeroEndPositionCount.ToString();
 
     }
 
     public override string Part2()
     {
-        return "";
+        var result = dial.ZeroClick;
+        return result.ToString();
     }
 
     class Dial
     {
+        private readonly ILogger logger;
 
-        public Dial(int initialPosition = 50, int lenght = 100)
+        public Dial(ILogger logger, int initialPosition = 50, int lenght = 100)
         {
+            this.logger = logger;
             Position = initialPosition;
             Lenght = lenght;
+            this.logger.LogDebug("Dial initialized at position {position} with lenght {lenght}", Position, Lenght);
         }
 
         int Lenght { get; set; }
         public int Position { get; set; }
+        public int ZeroClick { get; set; } = 0;
+        public int ZeroEndPositionCount { get; set; } = 0;
 
         public enum Direction
         {
@@ -58,29 +57,55 @@ public class Solver1 : SolverBase
 
         public void Move(int clicks, Direction direction)
         {
-            while (clicks > Lenght)
+
+            logger.LogDebug($"New Move {direction}{clicks}");
+            while (clicks >= Lenght)
             {
                 clicks = clicks - Lenght;
+                ZeroClick++;
+                logger.LogTrace("  Full revolution: clicks={clicks}, ZeroClick={zeroClick}", clicks, ZeroClick);
+            }
+
+            if (clicks <= 0)
+            {
+                logger.LogTrace("  No remaining clicks, staying at position {position}", Position);
+                return;
             }
 
             if (direction == Direction.Right)
             {
-                this.Position += clicks;
-                if (Position > Lenght)
-                    Position = Position - Lenght;
+                if (this.Position + clicks >= Lenght)
+                    ZeroClick++;
 
+                this.Position += clicks;
+                if (Position >= Lenght)
+                {
+                    Position -= Lenght;
+                }
             }
             if (direction == Direction.Left)
             {
+                if (this.Position != 0 && this.Position - clicks <= 0)
+                    ZeroClick++;
+
                 this.Position -= clicks;
-                if (Position < 0)
-                    Position = Lenght - int.Abs(Position);
+
+                if (Position <= 0)
+                {
+                    Position = Lenght - Math.Abs(Position);
+                }
+                if (Position == Lenght)
+                {
+                    Position = 0;
+                }
             }
 
-            if (Position == Lenght)
+            if (Position == 0)
             {
-                Position = 0;
+                ZeroEndPositionCount++;
             }
+
+            logger.LogDebug("Result: pos={position}, ZeroClick={zeroClick}, EndZero={endZero}", Position, ZeroClick, ZeroEndPositionCount);
         }
     }
 }
