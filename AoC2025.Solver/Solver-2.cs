@@ -43,7 +43,21 @@ public class Solver2 : SolverBase
 
     public override string Part2()
     {
-        return "Not implemented";
+        long pairSum = 0;
+
+        string[] ranges = Data[0].Split(',');
+        List<Range> rangeList = new List<Range>();
+
+        foreach (var r in ranges)
+        {
+            var parts = r.Split('-');
+            long start = long.Parse(parts[0]);
+            long end = long.Parse(parts[1]);
+            rangeList.Add(new Range(start, end));
+        }
+
+
+        return pairSum.ToString();
     }
 
     struct Range

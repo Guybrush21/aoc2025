@@ -7,21 +7,7 @@ public class Day1
     private ILogger logger;
     public Day1()
     {
-        ILoggerFactory factory = LoggerFactory.Create(builder =>
-            builder.AddConsole(options =>
-            {
-                options.FormatterName = "simple";
-            })
-            .AddSimpleConsole(options =>
-            {
-                options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
-                options.SingleLine = true;
-                options.TimestampFormat = "";
-                options.IncludeScopes = false;
-            })
-            .SetMinimumLevel(LogLevel.Debug)
-        );
-        this.logger = factory.CreateLogger("AOC");
+        this.logger = TestLogger.Instance;
     }
     [Fact]
     public void Part1()
@@ -109,4 +95,5 @@ R100";
 
         Assert.Equal("2", solver.Part2());
     }
+
 }
