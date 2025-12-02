@@ -7,7 +7,7 @@ public class Day1
     private ILogger logger;
     public Day1()
     {
-        ILoggerFactory factory = LoggerFactory.Create(builder => 
+        ILoggerFactory factory = LoggerFactory.Create(builder =>
             builder.AddConsole(options =>
             {
                 options.FormatterName = "simple";
@@ -109,5 +109,4 @@ R100";
 
         Assert.Equal("2", solver.Part2());
     }
-
 }

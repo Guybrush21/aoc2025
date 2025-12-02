@@ -8,8 +8,8 @@ public class Solver
     {
         this.logger = logger;
 
-        // Register available solvers, guarding input loading
         RegisterDay(1, day => new Solver1(day, LoadInput(day), logger));
+        RegisterDay(2, day => new Solver2(day, LoadInput(day), logger));
     }
 
     private string[] LoadInput(int day)
