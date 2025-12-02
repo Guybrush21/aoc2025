@@ -6,10 +6,9 @@ internal class Program
 {
     private static int Main(string[] args)
     {
-        var dayOption = new Option<int>(
+        var dayOption = new Option<int?>(
             name: "--day",
-            description: "Day to run",
-            getDefaultValue: () => 1);
+            description: "Day to run");
         dayOption.AddAlias("-d");
 
         var partOption = new Option<int?>(
@@ -21,7 +20,7 @@ internal class Program
         cmd.AddOption(dayOption);
         cmd.AddOption(partOption);
 
-        cmd.SetHandler((int day, int? part) =>
+        cmd.SetHandler((int? day, int? part) =>
         {
             ILoggerFactory factory = LoggerFactory.Create(builder =>
             {

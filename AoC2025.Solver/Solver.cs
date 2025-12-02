@@ -36,8 +36,11 @@ public class Solver
         }
     }
 
-    public void Solve(int day = 1, int? part = null)
+    public void Solve(int? day, int? part = null)
     {
+        if (!day.HasValue)
+            day = solvers.Count;
+
         var solver = this.solvers.FirstOrDefault(x => x.Day == day);
         if (solver == null)
         {
