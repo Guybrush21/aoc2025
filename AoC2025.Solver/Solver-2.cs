@@ -60,6 +60,8 @@ public class Solver2 : SolverBase
         return pairSum.ToString();
     }
 
+    private
+
     struct Range
     {
         public long Start;

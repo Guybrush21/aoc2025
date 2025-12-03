@@ -35,6 +35,16 @@ public class Day2
 
     }
 
+    [Fact]
+    public void D2P2AllSame()
+    {
+
+        var data = @"111-111";
+
+        Solver2 solver = new Solver2(2, [data], TestLogger.Instance);
+        Assert.Equal("111", solver.Part2());
+
+    }
 
 
 }
