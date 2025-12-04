@@ -56,13 +56,55 @@ public class Solver2 : SolverBase
             rangeList.Add(new Range(start, end));
         }
 
+        foreach (var range in rangeList)
+        {
+            for (long i = range.Start; i <= range.End; i++)
+            {
+
+                logger.LogDebug("Checking number: {0}", i);
+                var n = i.ToString();
+
+                for (var divider = n.Length / 2; divider >= 1; divider--)
+                {
+                    if (n.Length % divider != 0)
+                        // Not evenly divisible
+                        continue;
+
+                    var chunks = n.Chunk(divider).Select(x => new string(x));
+
+                    // Check all chunks are the same length
+                    if (!chunks.All(x => x.Length == chunks.First().Length))
+                        continue;
+
+                    var lastChunk = string.Empty;
+                    foreach (var c in chunks)
+                    {
+                        if (lastChunk == string.Empty)
+                            lastChunk = c;
+
+                        if (c != lastChunk)
+                        {
+                            lastChunk = string.Empty;
+                            break;
+                        }
+
+                    }
+
+                    if (lastChunk != string.Empty)
+                    {
+                        logger.LogDebug("Found matching pair: {0}", n);
+                        pairSum += i;
+                        break;
+                    }
+                }
+            }
+
+        }
 
         return pairSum.ToString();
     }
 
-    private
-
-    struct Range
+    private struct Range
     {
         public long Start;
         public long End;

@@ -20,7 +20,7 @@ public static class TestLogger
                 options.TimestampFormat = "";
                 options.IncludeScopes = false;
             })
-            .SetMinimumLevel(LogLevel.Information)
+            .SetMinimumLevel(LogLevel.Debug)
         );
         return factory.CreateLogger("AOC");
     }

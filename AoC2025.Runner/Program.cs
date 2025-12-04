@@ -1,49 +1,49 @@
+using System.CommandLine;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
-public class MovingTotal
+internal class Program
 {
-
-    List<int> totals = new List<int>();
-
-    public void Append(int[] list)
+    private static int Main(string[] args)
     {
-        int currentTotal = 0;
-        int i = 0;
-        foreach (var item in list)
+        var dayOption = new Option<int?>(
+            name: "--day",
+            description: "Day to run");
+        dayOption.AddAlias("-d");
+
+        var partOption = new Option<int?>(
+            name: "--part",
+            description: "Part to run (1 or 2). Omit to run both.");
+        partOption.AddAlias("-p");
+
+        var cmd = new RootCommand("Advent of Code 2025 runner");
+        cmd.AddOption(dayOption);
+        cmd.AddOption(partOption);
+
+        cmd.SetHandler((int? day, int? part) =>
         {
-            currentTotal += item;
-            i++;
-            if (i > 2)
+            ILoggerFactory factory = LoggerFactory.Create(builder =>
             {
-                totals.Add(currentTotal);
-                i = 0;
-            }
+                builder
+                    .SetMinimumLevel(LogLevel.Information)
+                    .AddSimpleConsole(options =>
+                    {
+                        options.SingleLine = true;
+                        options.TimestampFormat = "HH:mm:ss ";
+                        options.ColorBehavior = LoggerColorBehavior.Enabled;
+                        options.IncludeScopes = false;
+                    });
+            });
 
-        }
+            var runnerLogger = factory.CreateLogger("Runner");
+            var solverLogger = factory.CreateLogger("Solver");
 
-    }
+            runnerLogger.LogInformation("AOC 2025");
 
-    public bool Contains(int total)
-    {
-        return totals.Contains(total);
-    }
+            var solver = new Solver(solverLogger);
+            solver.Solve(day, part);
+        }, dayOption, partOption);
 
-    public static void Main(string[] args)
-    {
-        MovingTotal movingTotal = new MovingTotal();
-
-        movingTotal.Append(new int[] { 1, 2, 3, 4 });
-
-        Console.WriteLine(movingTotal.Contains(6));
-        Console.WriteLine(movingTotal.Contains(9));
-        Console.WriteLine(movingTotal.Contains(12));
-        Console.WriteLine(movingTotal.Contains(7));
-
-        movingTotal.Append(new int[] { 5 });
-
-        Console.WriteLine(movingTotal.Contains(6));
-        Console.WriteLine(movingTotal.Contains(9));
-        Console.WriteLine(movingTotal.Contains(12));
-        Console.WriteLine(movingTotal.Contains(7));
+        return cmd.Invoke(args);
     }
 }
-

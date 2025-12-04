@@ -38,12 +38,25 @@ public class Day2
     [Fact]
     public void D2P2AllSame()
     {
-
         var data = @"111-111";
-
         Solver2 solver = new Solver2(2, [data], TestLogger.Instance);
         Assert.Equal("111", solver.Part2());
+    }
 
+    [Fact]
+    public void D2P2W95A115()
+    {
+        var data = @"95-115";
+        Solver2 solver = new Solver2(2, [data], TestLogger.Instance);
+        Assert.Equal("210", solver.Part2());
+    }
+
+    [Fact]
+    public void D2P2NoPairs()
+    {
+        var data = @"1698522-1698528";
+        Solver2 solver = new Solver2(2, [data], TestLogger.Instance);
+        Assert.Equal("0", solver.Part2());
     }
 
 
