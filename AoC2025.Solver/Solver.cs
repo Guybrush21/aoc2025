@@ -11,6 +11,7 @@ public class Solver
         RegisterDay(1, day => new Solver1(day, LoadInput(day), logger));
         RegisterDay(2, day => new Solver2(day, LoadInput(day), logger));
         RegisterDay(3, day => new Solver3(day, LoadInput(day), logger));
+        RegisterDay(4, day => new Solver4(day, LoadInput(day), logger));
     }
 
     private string[] LoadInput(int day)
