@@ -37,6 +37,6 @@ public class Day4
 .@@@@@@@@.
 @.@.@@@.@.";
         var solver = new Solver4(4, input.Split(Environment.NewLine), TestLogger.Instance);
-        Assert.Equal("13", solver.Part1());
+        Assert.Equal("43", solver.Part2());
     }
 }
