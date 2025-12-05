@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-
 namespace AoC2025.Test;
 
 public class Day1
@@ -52,6 +51,8 @@ L82";
     public void Part2MultipleClicks()
     {
         var input = @"L200";
+
+
         var solver = new Solver1(1, input.Split(Environment.NewLine), logger);
 
         Assert.Equal("2", solver.Part2());

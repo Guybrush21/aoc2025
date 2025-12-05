@@ -6,7 +6,7 @@ public class Day4
     }
 
     [Fact]
-    public void Part1Test()
+    public void Part1()
     {
         var input = @"..@@.@@@@.
 @@@.@.@.@@
@@ -22,4 +22,21 @@ public class Day4
         Assert.Equal("13", solver.Part1());
     }
 
+
+    [Fact]
+    public void Part2()
+    {
+        var input = @"..@@.@@@@.
+@@@.@.@.@@
+@@@@@.@.@@
+@.@@@@..@.
+@@.@@@@.@@
+.@@@@@@@.@
+.@.@.@.@@@
+@.@@@.@@@@
+.@@@@@@@@.
+@.@.@@@.@.";
+        var solver = new Solver4(4, input.Split(Environment.NewLine), TestLogger.Instance);
+        Assert.Equal("13", solver.Part1());
+    }
 }
