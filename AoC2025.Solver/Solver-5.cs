@@ -47,7 +47,7 @@ public class Solver5 : SolverBase
             var isfresh = false;
             foreach (var range in this.rangeList)
             {
-                if (ingredient >= range.Start || ingredient <= range.End)
+                if (ingredient >= range.Start && ingredient <= range.End)
                 {
                     logger.LogDebug($"Ingredient {ingredient} is fresh for range {range.Start}-{range.End}");
                     isfresh = true;
@@ -64,6 +64,14 @@ public class Solver5 : SolverBase
 
     public override string Part2()
     {
-        throw new NotImplementedException();
+        var map = new HashSet<long>();
+        foreach (var range in this.rangeList)
+        {
+            for (long i = range.Start; i <= range.End; i++)
+            {
+                map.Add(i);
+            }
+        }
+        return map.Count.ToString();
     }
 }

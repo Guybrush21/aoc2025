@@ -29,6 +29,6 @@ public class Day5
     public void Part2()
     {
         var solver = new Solver5(4, input.Split(Environment.NewLine), TestLogger.Instance);
-        Assert.Equal("3", solver.Part2());
+        Assert.Equal("14", solver.Part2());
     }
 }

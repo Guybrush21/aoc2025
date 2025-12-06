@@ -3,7 +3,15 @@ setup:
 build:
 	dotnet build
 test:
-	dotnet test 
+	@echo "Running all tests (console output for failures is limited when running multiple tests)"
+	@echo "To see detailed logs for a specific failing test, run: dotnet test --filter \"TestName\""
+	@echo ""
+	dotnet test
+test-verbose:
+	@echo "Running all tests with detailed console output (may be very verbose)"
+	dotnet test --logger "console;verbosity=detailed"
+test-simple:
+	dotnet test --verbosity minimal
 run:
 	dotnet run --project ./AoC2025.Runner --
 watch-test:
