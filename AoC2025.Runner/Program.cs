@@ -25,7 +25,7 @@ internal class Program
             ILoggerFactory factory = LoggerFactory.Create(builder =>
             {
                 builder
-                    .SetMinimumLevel(LogLevel.Information)
+                    .SetMinimumLevel(LogLevel.Debug)
                     .AddSimpleConsole(options =>
                     {
                         options.SingleLine = true;
