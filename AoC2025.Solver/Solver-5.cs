@@ -20,7 +20,6 @@ public class Solver5 : SolverBase
 
     public Solver5(int day, string[] input, ILogger logger) : base(day, input, logger)
     {
-
         this.rangeList = new List<Range>();
         this.ingredients = new List<long>();
 
@@ -34,8 +33,6 @@ public class Solver5 : SolverBase
             long end = long.Parse(parts[1]);
             this.rangeList.Add(new Range(start, end));
         }
-
-
     }
 
     public override string Part1()
@@ -64,14 +61,47 @@ public class Solver5 : SolverBase
 
     public override string Part2()
     {
-        var map = new HashSet<long>();
-        foreach (var range in this.rangeList)
+        var ranges = new List<Range>(this.rangeList);
+        ranges.Sort((a, b) =>
         {
-            for (long i = range.Start; i <= range.End; i++)
+            if (a.Start - b.Start != 0) return a.Start.CompareTo(b.Start);
+            else return a.End.CompareTo(b.End);
+        });
+
+        for (int i = 0; i < ranges.Count - 1; i++)
+        {
+            if (ranges[i + 1].Start <= ranges[i].End)
             {
-                map.Add(i);
+                var newEnd = ranges[i + 1].End;
+                var newStart = ranges[i].End + 1;
+
+                ranges[i + 1] = new Range
+                {
+                    Start = newStart,
+                    End = newEnd
+                };
             }
         }
-        return map.Count.ToString();
+
+        var sum = 0L;
+        var lastBigEnd = 0L;
+        foreach (var r in ranges)
+        {
+            logger.LogDebug($"Range {r.Start}-{r.End}");
+            if (r.End < lastBigEnd)
+            {
+                logger.LogDebug($"Skipping range {r.Start}-{r.End}");
+                continue;
+            }
+            var minStart = Math.Max(r.Start, lastBigEnd + 1);
+            sum += r.End - Math.Abs(minStart) + 1;
+
+            lastBigEnd = r.End;
+            logger.LogDebug($"Sum is: {sum}. New lastBigEnd is {lastBigEnd}");
+        }
+
+        return sum.ToString();
+
     }
 }
+
