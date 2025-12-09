@@ -24,12 +24,15 @@ public class Solver6 : SolverBase
 
     public override string Part1()
     {
-        var totalProblems = this.Data[0].Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
-        var problems = new List<Problem>(totalProblems);
-        for (int i = 0; i < totalProblems; i++)
-        {
-            problems.Add(new Problem());
-        }
+        List<Problem> problems = this.BuildProblems();
+
+        return this.ResolveProblems(problems);
+
+    }
+
+    private List<Problem> BuildProblems()
+    {
+        List<Problem> problems = InitProblems();
 
         for (var j = 0; j < this.Data.Length; j++)
         {
@@ -52,6 +55,23 @@ public class Solver6 : SolverBase
             }
         }
 
+        return problems;
+    }
+
+    private List<Problem> InitProblems()
+    {
+        var totalProblems = this.Data[0].Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
+        var problems = new List<Problem>(totalProblems);
+        for (int i = 0; i < totalProblems; i++)
+        {
+            problems.Add(new Problem());
+        }
+
+        return problems;
+    }
+
+    private string ResolveProblems(List<Problem> problems)
+    {
         var result = 0L;
         foreach (var item in problems)
         {
@@ -71,24 +91,33 @@ public class Solver6 : SolverBase
                     logger.LogDebug($"Multiplying {number} to {problemResult}");
                     problemResult *= number;
                 }
-                else
-                {
-                    throw new InvalidOperationException($"Unknown operation {item.operation}");
-                }
-
             }
-
-
             result += problemResult;
             logger.LogDebug($"Problem result: {problemResult}, Total result: {result}");
         }
         return result.ToString();
-
     }
 
     public override string Part2()
     {
+        var problems = this.BuildProblems();
+        var transformedProblems = this.transformProblems(problems);
+        throw new NotImplementedException();
+    }
+
+    private object transformProblems(List<Problem> problems)
+    {
+        var result = new List<Problem>();
+        foreach (var problem in problems)
+        {
+            result.Add((this.transformProblem(problem)));
+        }
+        return result;
+    }
+
+    private Problem transformProblem(Problem problem)
+    {
+        var maxNumber = problem.numbers.Max();
         throw new NotImplementedException();
     }
 }
-
